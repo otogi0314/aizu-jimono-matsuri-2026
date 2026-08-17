@@ -255,14 +255,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sponsor-name-list li { font-size: 17px; font-weight: 800; }
 @keyframes sponsor-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.access { display: grid; grid-template-columns: 0.65fr 1fr; gap: 8vw; color: var(--cream); background: var(--salmon-dark); }
-.access .eyebrow { color: #f4d17d; }
+.access { display: grid; grid-template-columns: 0.65fr 1fr; gap: 8vw; color: var(--ink); background: var(--salmon); }
+.access .eyebrow { color: var(--brown); }
 .access dl { margin: 0; }
-.access dl div { display: grid; grid-template-columns: 100px 1fr; padding: 19px 0; border-bottom: 2px dashed rgba(255, 247, 233, 0.32); }
+.access dl div { display: grid; grid-template-columns: 100px 1fr; padding: 19px 0; border-bottom: 2px dashed rgba(61, 36, 23, 0.36); }
 .access dt { font-size: 12px; font-weight: 900; }
 .access dd { margin: 0; }
 .access dd strong { font-family: "Yu Mincho", serif; font-size: 18px; }
-.access > a { grid-column: 2; justify-self: start; padding: 12px 18px; color: var(--ink); background: var(--mustard); border-radius: 999px; font-size: 12px; font-weight: 900; }
+.access > a { grid-column: 2; justify-self: start; padding: 12px 18px; color: var(--cream); background: var(--brown); border-radius: 999px; font-size: 12px; font-weight: 900; }
 
 .coming { text-align: center; background: var(--sky); }
 .coming .eyebrow { margin-bottom: 12px; color: var(--brown); }
