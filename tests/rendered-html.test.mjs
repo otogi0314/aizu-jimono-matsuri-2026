@@ -20,7 +20,7 @@ test("renders the festival landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /会津じものまつり/);
-  assert.match(html, /募集はこちら/);
+  assert.match(html, /募集はこちら！/);
   assert.match(html, /シールを集めよう/);
   assert.match(html, /Instagram/);
   assert.match(html, /1FAIpQLSe2OgKyZluojOgZegKRzcHt72pfnzLuLBmiyURn2BpMVU1KCg/);

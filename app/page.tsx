@@ -91,7 +91,7 @@ export default function Home() {
             <p><strong>2026.11.8 <em>SUN</em></strong><span>10:00—16:00</span></p>
             <p><strong>北出丸通り・スマートシティAiCT</strong><span>入場無料　※一部ブースは有料です</span></p>
           </div>
-          <a className="primary-button" href="#recruit">募集はこちら <span aria-hidden="true">↓</span></a>
+          <a className="primary-button" href="#recruit">募集はこちら！ <span aria-hidden="true">↓</span></a>
         </div>
         <div className="hero-ribbon">出店・出展・協賛　募集中！</div>
       </section>
