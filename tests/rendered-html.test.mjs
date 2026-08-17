@@ -23,6 +23,7 @@ test("renders the festival landing page", async () => {
   assert.match(html, /募集はこちら/);
   assert.match(html, /シールを集めよう/);
   assert.match(html, /Instagram/);
+  assert.match(html, /1FAIpQLSe2OgKyZluojOgZegKRzcHt72pfnzLuLBmiyURn2BpMVU1KCg/);
   assert.ok(html.indexOf('id="about"') < html.indexOf('id="recruit"'));
   assert.ok(html.indexOf('id="recruit"') < html.indexOf('id="sponsors"'));
   assert.doesNotMatch(html, /codex-preview|Building your site/);

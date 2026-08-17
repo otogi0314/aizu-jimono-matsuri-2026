@@ -20,7 +20,7 @@ const recruitments = [
     icon: "結",
     title: "協賛企業",
     text: "地域の次世代と会津のこれからを、この祭りと一緒に応援してくださる企業・団体を募集します。",
-    url: "mailto:soumu@aizu-base.jp?subject=会津じものまつり協賛について",
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSe2OgKyZluojOgZegKRzcHt72pfnzLuLBmiyURn2BpMVU1KCg/viewform",
   },
 ];
 
