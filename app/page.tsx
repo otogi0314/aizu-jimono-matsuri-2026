@@ -208,7 +208,7 @@ export default function Home() {
       </section>
 
       <section className="coming section" id="news">
-        <p className="eyebrow">COMING SOON</p><h2>出店者・プログラムは<br />近日公開。</h2><p>最新のお知らせ、よくある質問なども順次掲載します。</p>
+        <p className="eyebrow">COMING SOON</p><h2>出店者・プログラムは<br />近日公開</h2><p>最新のお知らせ、よくある質問なども順次掲載します。</p>
       </section>
 
       <footer>
