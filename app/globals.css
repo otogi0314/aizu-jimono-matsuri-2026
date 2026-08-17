@@ -144,7 +144,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .primary-button:hover { transform: translate(3px, 3px); box-shadow: 4px 4px 0 var(--mustard); }
-.primary-button span { position: absolute; right: 26px; font-size: 24px; }
 .hero-ribbon {
   position: absolute;
   z-index: 3;
