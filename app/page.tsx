@@ -134,6 +134,26 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="experience section" id="experience">
+        <p className="eyebrow">祭りを彩る3つのコンセプト</p>
+        <h2><span className="know">知る・つくる</span><br /><span className="eat">食べる・ふれる</span><br /><span className="dance">踊る・体感する</span></h2>
+        <div className="experience-grid">
+          {experiences.map((item) => (
+            <article key={item.num}><span>{item.num}</span><h3>{item.title}</h3><p>{item.text}</p></article>
+          ))}
+        </div>
+      </section>
+
+      <section className="stamp section" id="sticker-rally">
+        <p className="eyebrow">SEAL RALLY</p>
+        <div className="seal-rally-visual" aria-hidden="true"><span>体験</span><span>飲食</span><span>挑戦</span></div>
+        <h2>会場をめぐって、<br />シールを集めよう！</h2>
+        <div className="stamp-copy">
+          <p>体験ブースや飲食ブースを楽しんだら、会場だけのオリジナルシールをゲット。</p>
+          <p>シールを3枚集めると、ガラポンにチャレンジできます。いろいろなブースをめぐって、会津の魅力をたっぷり味わおう！</p>
+        </div>
+      </section>
+
       <section className="recruit section" id="recruit">
         <div className="section-heading">
           <p className="eyebrow">JOIN THE FESTIVAL</p>
@@ -154,26 +174,6 @@ export default function Home() {
               <span className="recruit-link">募集要項・応募フォーム <b aria-hidden="true">→</b></span>
             </a>
           ))}
-        </div>
-      </section>
-
-      <section className="experience section" id="experience">
-        <p className="eyebrow">祭りを彩る3つのコンセプト</p>
-        <h2><span className="know">知る・つくる</span><br /><span className="eat">食べる・ふれる</span><br /><span className="dance">踊る・体感する</span></h2>
-        <div className="experience-grid">
-          {experiences.map((item) => (
-            <article key={item.num}><span>{item.num}</span><h3>{item.title}</h3><p>{item.text}</p></article>
-          ))}
-        </div>
-      </section>
-
-      <section className="stamp section" id="sticker-rally">
-        <p className="eyebrow">SEAL RALLY</p>
-        <div className="seal-rally-visual" aria-hidden="true"><span>体験</span><span>飲食</span><span>挑戦</span></div>
-        <h2>会場をめぐって、<br />シールを集めよう！</h2>
-        <div className="stamp-copy">
-          <p>体験ブースや飲食ブースを楽しんだら、会場だけのオリジナルシールをゲット。</p>
-          <p>シールを3枚集めると、ガラポンにチャレンジできます。いろいろなブースをめぐって、会津の魅力をたっぷり味わおう！</p>
         </div>
       </section>
 

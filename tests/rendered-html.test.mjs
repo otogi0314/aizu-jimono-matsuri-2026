@@ -24,5 +24,6 @@ test("renders the festival landing page", async () => {
   assert.match(html, /シールを集めよう/);
   assert.match(html, /Instagram/);
   assert.ok(html.indexOf('id="about"') < html.indexOf('id="recruit"'));
+  assert.ok(html.indexOf('id="recruit"') < html.indexOf('id="sponsors"'));
   assert.doesNotMatch(html, /codex-preview|Building your site/);
 });
