@@ -12,7 +12,11 @@ const { d1, r2 } = hostingConfig;
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 
 const localBindingConfig = {
+  name: "aizu-jimono-matsuri",
   main: "./worker/index.ts",
+  workers_dev: true,
+  preview_urls: false,
+  compatibility_date: "2026-08-19",
   compatibility_flags: ["nodejs_compat"],
   d1_databases: d1
     ? [

@@ -1,4 +1,4 @@
-# vinext-starter
+# 会津じものまつり 2026
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
@@ -89,7 +89,8 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
+- `npm test`: build and verify version 3, SEO routes, and Cloudflare output
+- `npm run deploy:cloudflare`: build and deploy to Cloudflare Workers
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
 ## Learn More
