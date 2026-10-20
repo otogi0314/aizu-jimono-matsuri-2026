@@ -18,6 +18,10 @@ const localBindingConfig = {
   preview_urls: false,
   compatibility_date: "2026-08-19",
   compatibility_flags: ["nodejs_compat"],
+  routes: [
+    { pattern: "aizujimono.jp", custom_domain: true },
+    { pattern: "www.aizujimono.jp", custom_domain: true },
+  ],
   d1_databases: d1
     ? [
         {
@@ -37,7 +41,7 @@ const localBindingConfig = {
     : [],
 };
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ command }) => {
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= "false";
@@ -60,7 +64,12 @@ export default defineConfig(async () => {
       sites(),
       cloudflare({
         viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
-        config: localBindingConfig,
+        // Installed workerd (local dev) only supports up to 2026-05-22; keep the
+        // production date for builds/deploys.
+        config:
+          command === "serve"
+            ? { ...localBindingConfig, compatibility_date: "2026-05-22" }
+            : localBindingConfig,
       }),
     ],
   };

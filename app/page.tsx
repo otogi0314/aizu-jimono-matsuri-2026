@@ -1,7 +1,7 @@
 "use client";
 
 import MenuHeader from "./MenuHeader";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const recruitments = [
   {
@@ -9,6 +9,7 @@ const recruitments = [
     title: "飲食・キッチンカー",
     text: "会津の食材や郷土の味で、来場者のおなかと心を満たしてくれる飲食出店者を募集します。",
     url: "https://docs.google.com/forms/d/1os86tNC-kJYLIoJhj8K690wkYRRrjsUHnxgteK5wEk4/viewform?edit_requested=true",
+    closed: true,
   },
   {
     icon: "験",
@@ -30,43 +31,220 @@ const experiences = [
   { num: "参", title: "踊る・体感する", text: "会津の祭りやリズムを身体で感じる体験を通して、踊って楽しむ一日を。" },
 ];
 
-const sponsors = [
-  { name: "SanYoshi", logo: "/sanyoshi.png", url: "https://www.owanya.com/", tier: 3 },
+// 協賛区分: "top"=最上位の別枠（ラベルなし） / "special"=スペシャルスポンサー（別枠） / 10=10万円（ロゴ+URL） / 5=5万円（ロゴ） / 1=1万円（社名のみ）
+// スペシャルスポンサーを増やす場合は tier: "special" の行を追加するだけです。
+// ロゴ未入稿の企業は logo を "" にすると社名のみで表示されます。
+type Sponsor = { name: string; logo: string; url: string; tier: "top" | "special" | 10 | 5 | 1 };
+
+const sponsors: Sponsor[] = [
+  { name: "一般社団法人AiCTコンソーシアム", logo: "/一般社団法人AiCTコンソーシアム.png", url: "", tier: "top" },
+
+  { name: "会津土建株式会社", logo: "/会津土建株式会社.jpeg", url: "https://www.adoken.co.jp/", tier: "special" },
+
+  { name: "株式会社三義漆器店", logo: "/株式会社三義漆器店.jpeg", url: "https://www.owanya.com", tier: 10 },
+  { name: "ツルカメ建設株式会社", logo: "/ツルカメ建設株式会社.jpg", url: "https://tsurukame-construction.co.jp/", tier: 10 },
+
+  { name: "株式会社会津精密技術研究所", logo: "/株式会社会津精密技術研究所.jpg", url: "", tier: 5 },
+  { name: "リズム株式会社", logo: "/リズム株式会社.png", url: "", tier: 5 },
+  { name: "金堀重機", logo: "/金堀重機.gif", url: "", tier: 5 },
+
+  { name: "元祖輪箱飯（わっぱめし）割烹・会津料理 田季野", logo: "", url: "", tier: 1 },
+  { name: "Glocal Dining bar 3rd place", logo: "", url: "", tier: 1 },
+  { name: "ヒメジ理化株式会社", logo: "", url: "", tier: 1 },
   { name: "第一緑化工業株式会社", logo: "", url: "", tier: 1 },
+  { name: "COOP BESTAにいでら", logo: "", url: "", tier: 1 },
+  { name: "株式会社メカテック", logo: "", url: "", tier: 1 },
+  { name: "有限会社武藤製作所", logo: "", url: "", tier: 1 },
+  { name: "西田精機", logo: "", url: "", tier: 1 },
+  { name: "東邦銀行", logo: "", url: "", tier: 1 },
+  { name: "会津若松商工会", logo: "", url: "", tier: 1 },
 ];
 
 const instagramProfileUrl = "https://www.instagram.com/aizu_base/";
 const instagramPosts = [
   { url: "https://www.instagram.com/p/DbcyhTuRtcN/", caption: "会津じものまつりの最新情報" },
-  { url: "https://www.instagram.com/p/Dbu03U_xfuu/", caption: "準備の様子を発信中" },
-  { url: "https://www.instagram.com/p/DbsPKw7RL4O/", caption: "会津の魅力をお届けします" },
+  { url: "https://www.instagram.com/reel/DdGW6JwRCnw/?stkn=MW0xbGZyN2lneXowaw==", caption: "駐車場ガイド" },
+  { url: "https://www.instagram.com/reel/Dc5euTjxlCz/?stkn=aHBoZ2E0bmhrdDh2", caption: "ステージ出演決定" },
 ];
+
+const faqs = [
+  {
+    question: "会津じものまつり 2026はいつ開催されますか？",
+    answer: "2026年11月8日（日）の10:00から16:00まで開催します。",
+  },
+  {
+    question: "会場はどこですか？",
+    answer: "福島県会津若松市東栄町1-77のスマートシティAiCTと北出丸通りです。",
+  },
+  {
+    question: "入場料はかかりますか？",
+    answer: "入場は無料です。一部の体験、飲食、物販は有料です。",
+  },
+  {
+    question: "どのようなイベントですか？",
+    answer: "会津の食、農業、伝統工芸と、プログラミング・デザイン・AIなどのデジタル体験が集まる地域イベントです。ステージやシールラリーも予定しています。",
+  },
+  {
+    question: "子どもも参加できますか？",
+    answer: "子どもたちが農業、工芸、ITなどを楽しく学べる体験ブースを予定しています。ご家族でお楽しみください。",
+  },
+  {
+    question: "雨天時や駐車場の案内はどこで確認できますか？",
+    answer: "雨天時の開催方針、イベント当日の駐車場利用、交通規制などは、決まり次第この公式サイトと公式Instagramでお知らせします。",
+  },
+];
+
+function SponsorLogoCard({ sponsor }: { sponsor: Sponsor }) {
+  const body = sponsor.logo ? (
+    <>
+      <img src={sponsor.logo} alt={`${sponsor.name} ロゴ`} />
+      <span>{sponsor.name}</span>
+    </>
+  ) : (
+    <>
+      <div className="sponsor-logo-placeholder">{sponsor.name}</div>
+      <span aria-hidden="true">&nbsp;</span>
+    </>
+  );
+  return sponsor.url ? (
+    <a className="sponsor-logo-card" href={sponsor.url} target="_blank" rel="noreferrer">{body}</a>
+  ) : (
+    <div className="sponsor-logo-card">{body}</div>
+  );
+}
+
+function SponsorFeatured({ sponsors, label, subLabel }: { sponsors: Sponsor[]; label?: string; subLabel?: string }) {
+  return (
+    <div className="sponsor-special">
+      {label && <p className="sponsor-special-label">{label}{subLabel && <span>{subLabel}</span>}</p>}
+      <div className="sponsor-special-list">
+        {sponsors.map((sponsor) => {
+          const body = (
+            <>
+              {sponsor.logo && <img src={sponsor.logo} alt={`${sponsor.name} ロゴ`} />}
+              <span>{sponsor.name}</span>
+            </>
+          );
+          return sponsor.url ? (
+            <a className="sponsor-special-item" key={sponsor.name} href={sponsor.url} target="_blank" rel="noreferrer">{body}</a>
+          ) : (
+            <div className="sponsor-special-item" key={sponsor.name}>{body}</div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// 幅に収まらないときだけ自動で横に流れ、指やマウスで手動スクロールもできる列。
+// 触っている間・マウスを乗せている間は止まり、離すと少し待って再開する。
+function SponsorMarquee({ className, children }: { className: string; children: ReactNode }) {
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const groupRef = useRef<HTMLDivElement | null>(null);
+  const [overflow, setOverflow] = useState(false);
+  const pausedRef = useRef(false);
+  const resumeTimer = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const group = groupRef.current;
+    if (!viewport || !group) return;
+    const measure = () => setOverflow(group.offsetWidth - parseFloat(getComputedStyle(group).paddingRight) > viewport.clientWidth + 1);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    observer.observe(group);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const group = groupRef.current;
+    if (!viewport || !group) return;
+    if (!overflow) {
+      viewport.scrollLeft = 0;
+      return;
+    }
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let pos = viewport.scrollLeft;
+    let last = performance.now();
+    let frame = 0;
+    const speed = 40; // px/秒
+
+    const wrap = () => {
+      const loop = group.offsetWidth;
+      if (loop > 0 && viewport.scrollLeft >= loop) {
+        viewport.scrollLeft -= loop;
+        pos = viewport.scrollLeft;
+      }
+    };
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 100);
+      last = now;
+      if (!pausedRef.current && !reduceMotion) {
+        if (Math.abs(viewport.scrollLeft - pos) > 2) pos = viewport.scrollLeft; // 手動スクロールの位置を引き継ぐ
+        pos += (speed * dt) / 1000;
+        const loop = group.offsetWidth;
+        if (loop > 0 && pos >= loop) pos -= loop;
+        viewport.scrollLeft = pos;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    const onScroll = () => {
+      if (pausedRef.current) pos = viewport.scrollLeft;
+      wrap();
+    };
+    viewport.addEventListener("scroll", onScroll, { passive: true });
+    frame = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(frame);
+      viewport.removeEventListener("scroll", onScroll);
+    };
+  }, [overflow]);
+
+  const pause = () => {
+    window.clearTimeout(resumeTimer.current);
+    pausedRef.current = true;
+  };
+  const resume = (delay: number) => {
+    window.clearTimeout(resumeTimer.current);
+    resumeTimer.current = window.setTimeout(() => {
+      pausedRef.current = false;
+    }, delay);
+  };
+
+  return (
+    <div
+      className={`sponsor-scroller ${className}`}
+      ref={viewportRef}
+      onPointerEnter={(e) => { if (e.pointerType === "mouse") pause(); }}
+      onPointerLeave={(e) => { if (e.pointerType === "mouse") resume(0); }}
+      onTouchStart={pause}
+      onTouchEnd={() => resume(2000)}
+      onTouchCancel={() => resume(2000)}
+      onWheel={() => { pause(); resume(2000); }}
+    >
+      <div className="sponsor-scroller-track">
+        <div className="sponsor-scroller-group" ref={groupRef}>{children}</div>
+        {overflow && <div className="sponsor-scroller-group" aria-hidden="true">{children}</div>}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [igIndex, setIgIndex] = useState(0);
-  const [shouldSponsorMarquee, setShouldSponsorMarquee] = useState(false);
-  const sponsorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => setIgIndex((index) => (index + 1) % instagramPosts.length), 3500);
     return () => window.clearInterval(timer);
   }, []);
 
-  const logoSponsors = sponsors.filter((sponsor) => sponsor.logo);
-  const textSponsors = sponsors.filter((sponsor) => !sponsor.logo);
-
-  useEffect(() => {
-    const element = sponsorRef.current;
-    if (!element) return;
-
-    const updateMarquee = () => setShouldSponsorMarquee(element.scrollWidth > element.clientWidth + 1);
-    updateMarquee();
-    const observer = new ResizeObserver(updateMarquee);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [logoSponsors.length]);
-
-  const marqueeSponsors = shouldSponsorMarquee ? [...logoSponsors, ...logoSponsors] : logoSponsors;
+  const topSponsors = sponsors.filter((sponsor) => sponsor.tier === "top");
+  const specialSponsors = sponsors.filter((sponsor) => sponsor.tier === "special");
+  const tier10Sponsors = sponsors.filter((sponsor) => sponsor.tier === 10);
+  const tier5Sponsors = sponsors.filter((sponsor) => sponsor.tier === 5);
+  const textSponsors = sponsors.filter((sponsor) => sponsor.tier === 1);
 
   return (
     <main>
@@ -74,16 +252,25 @@ export default function Home() {
 
       <section className="hero" id="top">
         <div className="poster-wrap">
-          <img className="hero-image" src="/aizu-jimono-poster.png" alt="2026 会津じものまつりのチラシ" />
+          <img
+            className="hero-image"
+            src="/aizu-jimono-poster.webp"
+            alt="会津若松市で2026年11月8日に開催する会津じものまつり 2026のチラシ"
+            width={1600}
+            height={2263}
+            fetchPriority="high"
+            decoding="async"
+          />
         </div>
         <div className="hero-copy">
           <p className="eyebrow hero-reveal hero-reveal-1">AIZU JIMONO MATSURI 2026</p>
           <h1>
-            <span className="hero-reveal hero-reveal-2 hero-line-first">知って、食べて、踊って、</span>
-            <span className="hero-reveal hero-reveal-3">会津の「今」と</span>
-            <span className="hero-reveal hero-reveal-4">「これから」を、</span>
-            <span className="hero-reveal hero-reveal-5">ともにつくる一日。</span>
+            <span className="hero-event-name hero-reveal hero-reveal-2">会津じものまつり 2026</span>
+            <span className="hero-tagline-line hero-reveal hero-reveal-3 hero-line-first">知って、食べて、踊って、</span>
+            <span className="hero-tagline-line hero-reveal hero-reveal-4">会津の「今」と</span>
+            <span className="hero-tagline-line hero-reveal hero-reveal-5">「これから」を、ともにつくる一日。</span>
           </h1>
+          <p className="hero-summary hero-reveal hero-reveal-6">2026年11月8日、福島県会津若松市で開催する、食・伝統工芸・農業・デジタルを親子で楽しめる体験型イベントです。</p>
           <div className="hero-tags hero-reveal hero-reveal-6" aria-label="イベントの内容">
             <span>体験</span><span>飲食</span><span>ステージ</span>
           </div>
@@ -166,13 +353,23 @@ export default function Home() {
         </div>
         <div className="recruit-grid">
           {recruitments.map((item, index) => (
-            <a className="recruit-card" key={item.title} href={item.url} target={item.url.startsWith("http") ? "_blank" : undefined} rel={item.url.startsWith("http") ? "noreferrer" : undefined}>
-              <div className="card-top"><span className="seal">{item.icon}</span><small>{String(index + 1).padStart(2, "0")}</small></div>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-              <div className="status"><i /> 募集中！</div>
-              <span className="recruit-link">募集要項・応募フォーム <b aria-hidden="true">→</b></span>
-            </a>
+            item.closed ? (
+              <div className="recruit-card is-closed" key={item.title}>
+                <div className="card-top"><span className="seal">{item.icon}</span><small>{String(index + 1).padStart(2, "0")}</small></div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <div className="status is-closed"><i /> 募集終了しました</div>
+                <span className="recruit-link is-closed">たくさんのご応募ありがとうございました</span>
+              </div>
+            ) : (
+              <a className="recruit-card" key={item.title} href={item.url} target={item.url.startsWith("http") ? "_blank" : undefined} rel={item.url.startsWith("http") ? "noreferrer" : undefined}>
+                <div className="card-top"><span className="seal">{item.icon}</span><small>{String(index + 1).padStart(2, "0")}</small></div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <div className="status"><i /> 募集中！</div>
+                <span className="recruit-link">募集要項・応募フォーム <b aria-hidden="true">→</b></span>
+              </a>
+            )
           ))}
         </div>
       </section>
@@ -180,19 +377,25 @@ export default function Home() {
       <section className="sponsors section" id="sponsors">
         <div className="section-heading"><p className="eyebrow">SPONSORS</p><h2>協賛企業</h2></div>
         <div className="sponsor-tiers">
-          <div className="sponsor-marquee" ref={sponsorRef}>
-            <div className={`sponsor-marquee-track${shouldSponsorMarquee ? " is-active" : ""}`}>
-              {marqueeSponsors.map((sponsor, index) => (
-                <a className="sponsor-marquee-item" key={`${sponsor.name}-${index}`} href={sponsor.url} target="_blank" rel="noreferrer">
-                  <img src={sponsor.logo} alt={`${sponsor.name} ロゴ`} />
-                  <span>{sponsor.name}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-          <ul className="sponsor-name-list">
-            {textSponsors.map((sponsor) => <li key={sponsor.name}>{sponsor.name}</li>)}
-          </ul>
+          {topSponsors.length > 0 && <SponsorFeatured sponsors={topSponsors} />}
+          {specialSponsors.length > 0 && (
+            <SponsorFeatured sponsors={specialSponsors} label="SPECIAL SPONSOR" subLabel="スペシャルスポンサー" />
+          )}
+          {tier10Sponsors.length > 0 && (
+            <SponsorMarquee className="sponsor-logo-list-10">
+              {tier10Sponsors.map((sponsor) => <SponsorLogoCard key={sponsor.name} sponsor={sponsor} />)}
+            </SponsorMarquee>
+          )}
+          {tier5Sponsors.length > 0 && (
+            <SponsorMarquee className="sponsor-logo-list-5">
+              {tier5Sponsors.map((sponsor) => <SponsorLogoCard key={sponsor.name} sponsor={sponsor} />)}
+            </SponsorMarquee>
+          )}
+          {textSponsors.length > 0 && (
+            <SponsorMarquee className="sponsor-name-list">
+              {textSponsors.map((sponsor) => <span className="sponsor-name" key={sponsor.name}>{sponsor.name}</span>)}
+            </SponsorMarquee>
+          )}
         </div>
       </section>
 
@@ -200,15 +403,34 @@ export default function Home() {
         <div><p className="eyebrow">EVENT INFORMATION</p><h2>開催情報</h2></div>
         <dl>
           <div><dt>日時</dt><dd><strong>2026年11月8日（日）</strong><br />10:00〜16:00</dd></div>
-          <div><dt>会場</dt><dd><strong>スマートシティAiCT・北出丸通り</strong><br />福島県会津若松市東栄町1-77</dd></div>
+          <div><dt>会場</dt><dd><strong>スマートシティAiCT・北出丸通り</strong><br />〒965-0872 福島県会津若松市東栄町1-77</dd></div>
           <div><dt>入場料</dt><dd><strong>無料</strong><br />※一部の体験・飲食・物販は有料です。</dd></div>
           <div><dt>雨天時</dt><dd>開催方針は決まり次第お知らせします。</dd></div>
         </dl>
-        <a href="https://maps.google.com/?q=スマートシティAiCT" target="_blank" rel="noreferrer">Googleマップで見る ↗</a>
+        <div className="access-links">
+          <a href="https://maps.google.com/?q=スマートシティAiCT" target="_blank" rel="noreferrer">Googleマップで見る ↗</a>
+          <a href="https://aizu-aiyumu.co.jp/about/" target="_blank" rel="noreferrer">会場の公式情報を見る ↗</a>
+        </div>
+      </section>
+
+      <section className="faq section" id="faq">
+        <div className="section-heading">
+          <p className="eyebrow">FREQUENTLY ASKED QUESTIONS</p>
+          <h2>よくある質問</h2>
+          <p className="faq-intro">会津じものまつり 2026の開催日、会場、料金、内容についてご案内します。</p>
+        </div>
+        <div className="faq-list">
+          {faqs.map((faq) => (
+            <details key={faq.question}>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       <section className="coming section" id="news">
-        <p className="eyebrow">COMING SOON</p><h2>出店者・プログラムは<br />近日公開</h2><p>最新のお知らせ、よくある質問なども順次掲載します。</p>
+        <p className="eyebrow">COMING SOON</p><h2>出店者・プログラムは<br />近日公開</h2><p>詳しい出店情報やタイムテーブルは、決まり次第この公式サイトと公式Instagramでお知らせします。</p>
       </section>
 
       <footer>

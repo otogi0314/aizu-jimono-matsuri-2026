@@ -10,6 +10,7 @@ const menuItems = [
   { href: "#sticker-rally", label: "シールラリー" },
   { href: "#sponsors", label: "協賛企業" },
   { href: "#access", label: "開催情報・アクセス" },
+  { href: "#faq", label: "よくある質問" },
   { href: "#news", label: "お知らせ" },
 ];
 

@@ -5,12 +5,13 @@ import "./globals.css";
 export async function generateMetadata(): Promise<Metadata> {
   const origin = await getSiteOrigin();
   const description =
-    "2026年11月8日に会津若松市で開催。会津の食・ものづくり・人に出会う「会津じものまつり 2026」の公式サイトです。";
+    "2026年11月8日に福島県会津若松市で開催。会津の食・伝統工芸・農業・デジタルを親子で楽しめる入場無料の体験型イベント「会津じものまつり 2026」公式サイト。";
+  const title = "会津じものまつり 2026｜11月8日・会津若松市の体験型イベント";
 
   return {
     metadataBase: new URL(origin),
     title: {
-      default: "会津じものまつり 2026",
+      default: title,
       template: "%s｜会津じものまつり",
     },
     description,
@@ -21,55 +22,81 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: "/favicon.jpg",
     },
     openGraph: {
-      title: "会津じものまつり 2026",
+      title,
       description,
       type: "website",
       locale: "ja_JP",
       url: "/",
       siteName: "会津じものまつり",
-      images: [{ url: "/aizu-jimono-poster.png", width: 2482, height: 3510, alt: "2026 会津じものまつりのチラシ" }],
+      images: [{ url: "/og.png", width: 1731, height: 909, alt: "会津じものまつり 2026公式サイト" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "会津じものまつり 2026",
+      title,
       description,
-      images: ["/aizu-jimono-poster.png"],
+      images: ["/og.png"],
     },
   };
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const origin = await getSiteOrigin();
-  const eventStructuredData = {
+  const organizationId = `${origin}/#organization`;
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Event",
-    name: "会津じものまつり 2026",
-    description: "会津の食・ものづくり・人に出会う体験型イベントです。",
-    startDate: "2026-11-08T10:00:00+09:00",
-    endDate: "2026-11-08T16:00:00+09:00",
-    eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-    location: {
-      "@type": "Place",
-      name: "スマートシティAiCT・北出丸通り",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "東栄町1-77",
-        addressLocality: "会津若松市",
-        addressRegion: "福島県",
-        addressCountry: "JP",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${origin}/#website`,
+        url: `${origin}/`,
+        name: "会津じものまつり",
+        alternateName: "AIZU JIMONO MATSURI",
+        inLanguage: "ja-JP",
+        publisher: { "@id": organizationId },
       },
-    },
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "JPY",
-      availability: "https://schema.org/InStock",
-      url: `${origin}/`,
-    },
-    organizer: { "@type": "Organization", name: "会津じものまつり実行委員会" },
-    image: [`${origin}/aizu-jimono-poster.png`],
-    url: `${origin}/`,
+      {
+        "@type": "Organization",
+        "@id": organizationId,
+        name: "会津じものまつり実行委員会",
+        url: `${origin}/`,
+        sameAs: ["https://www.instagram.com/aizu_base/"],
+      },
+      {
+        "@type": "Event",
+        "@id": `${origin}/#event`,
+        name: "会津じものまつり 2026",
+        description: "2026年11月8日に福島県会津若松市で開催する、会津の食・伝統工芸・農業・デジタルを親子で楽しめる体験型イベントです。",
+        startDate: "2026-11-08T10:00:00+09:00",
+        endDate: "2026-11-08T16:00:00+09:00",
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        isAccessibleForFree: true,
+        inLanguage: "ja-JP",
+        location: {
+          "@type": "Place",
+          name: "スマートシティAiCT・北出丸通り",
+          url: "https://aizu-aiyumu.co.jp/about/",
+          address: {
+            "@type": "PostalAddress",
+            postalCode: "965-0872",
+            streetAddress: "東栄町1-77",
+            addressLocality: "会津若松市",
+            addressRegion: "福島県",
+            addressCountry: "JP",
+          },
+        },
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "JPY",
+          availability: "https://schema.org/InStock",
+          url: `${origin}/`,
+        },
+        organizer: { "@id": organizationId },
+        image: [`${origin}/aizu-jimono-poster.png`, `${origin}/og.png`],
+        url: `${origin}/`,
+      },
+    ],
   };
 
   return (
@@ -77,7 +104,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
         />
         {children}
       </body>
