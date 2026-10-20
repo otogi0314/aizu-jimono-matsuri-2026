@@ -17,7 +17,7 @@
 | `app/layout.tsx` | タイトル、説明文、OGP、検索エンジン向け構造化データ |
 | `app/MenuHeader.tsx` | ハンバーガーメニュー |
 | `app/globals.css` | 色、余白、アニメーション |
-| `public/` | 画像、協賛企業ロゴ、チラシPDF |
+| `public/` | 画像、協賛企業ロゴ |
 | `worker/index.ts` | www転送と画像最適化（通常は触らない） |
 | `vite.config.ts` | ビルドとCloudflare設定（通常は触らない） |
 | `編集ガイド.md` | 非エンジニア向けの編集手順 |
