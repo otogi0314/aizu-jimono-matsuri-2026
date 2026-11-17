@@ -43,3 +43,8 @@ next-env.d.ts
 /work/
 
 *.tsbuildinfo
+
+# local tool state
+/.claude/
+/.openai/
+desktop.ini
